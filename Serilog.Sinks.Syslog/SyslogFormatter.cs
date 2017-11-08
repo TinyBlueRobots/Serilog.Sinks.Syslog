@@ -9,9 +9,18 @@ using Serilog.Events;
 using Serilog.Formatting.Display;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Serilog.Sinks.Syslog
 {
+  static class StringExtensions
+  {
+    public static string UnescapeQuotes(this string input)
+    {
+      return input.Replace(@"\""", @"""");
+    }
+  }
+
   class SyslogFormatter
   {
     readonly string _application;
@@ -40,10 +49,30 @@ namespace Serilog.Sinks.Syslog
 
     SyslogEvent MapToSyslogEvent(LogEvent logEvent)
     {
+
+      string escapeChars(LogEventPropertyValue logEventPropertyValue)
+      {
+        var input = logEventPropertyValue.ToString();
+        if (input.StartsWith(@""""))
+        {
+          input = input.Substring(1);
+        }
+        if (input.EndsWith(@""""))
+        {
+          input = input.Substring(0, input.Length - 1);
+        }
+        input = input.UnescapeQuotes();
+        input = Regex.Replace(input, @"[\]\\""]", match => $@"\{match}");
+        return input;
+      }
+
       string getLogEventProperty(string property)
       {
         LogEventPropertyValue logEventPropertyValue;
-        return logEvent.Properties.TryGetValue(property, out logEventPropertyValue) ? logEventPropertyValue.ToString().Trim('"') : "-";
+        return
+          logEvent.Properties.TryGetValue(property, out logEventPropertyValue)
+          ? escapeChars(logEventPropertyValue)
+          : "-";
       }
 
       string getHostName()
@@ -62,7 +91,8 @@ namespace Serilog.Sinks.Syslog
       var priority = (int)_facility * 8 + (int)severity;
       var processId = getLogEventProperty("ProcessId");
       var messageId = getLogEventProperty("SourceContext");
-      var structuredDataKvps = String.Join(" ", logEvent.Properties.Select(kvp => $"{kvp.Key}=\"{kvp.Value.ToString().Trim('"')}\""));
+      var properties = logEvent.Properties.Select(kvp => (Key: kvp.Key, Value: escapeChars(kvp.Value)));
+      var structuredDataKvps = String.Join(" ", properties.Select(t => $@"{t.Key}=""{t.Value}"""));
       var structuredData = String.IsNullOrEmpty(structuredDataKvps) ? "-" : $"[structuredData@0 {structuredDataKvps}]";
       var syslogEvent = new SyslogEvent
       {
@@ -82,7 +112,7 @@ namespace Serilog.Sinks.Syslog
         }
         else
         {
-          stringWriter.Write(logEvent.RenderMessage());
+          stringWriter.Write(logEvent.RenderMessage().UnescapeQuotes());
         }
         syslogEvent.Message = stringWriter.ToString();
       }

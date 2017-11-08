@@ -33,7 +33,7 @@ let tests =
     test "error" {
       let udpServer = setup.Value
       let log = Log.ForContext<FooBar>()
-      log.Error("Error {$foo}", "bar")
+      log.Error("Error {$foo}", @"""bar[]\""")
       udpServer.Wait()
       let localHostName = Dns.GetHostName()
       let pri, timestamp, hostname, application, processId, messageId, structuredData, message = udpServer.Requests.Dequeue() |> mtch
@@ -43,9 +43,9 @@ let tests =
       Expect.equal application "test" "application"
       Expect.isMatch processId "\\d+" "processId"
       Expect.equal messageId "Tests+FooBar" "messageId"
-      let expectedStructuredData = sprintf @"structuredData@0 foo=""bar"" SourceContext=""%s"" ProcessId=""%s""" messageId processId
+      let expectedStructuredData = sprintf @"structuredData@0 foo=""\""bar[\]\\\"""" SourceContext=""%s"" ProcessId=""%s""" messageId processId
       Expect.equal structuredData expectedStructuredData "structuredData"
-      Expect.equal message @"Error ""bar""" "message"
+      Expect.equal message @"Error """"bar[]\""""" "message"
     }
 
     test "information" {
