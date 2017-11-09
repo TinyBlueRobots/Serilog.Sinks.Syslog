@@ -9,7 +9,7 @@
     <PackageId>Serilog.Sinks.SyslogServer</PackageId>
     <PackageTags>serilog;syslog</PackageTags>
     <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
-    <PackageProjectUrl>http://serilog.net</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/TinyBlueRobots/Serilog.Sinks.Syslog</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/TinyBlueRobots/Serilog.Sinks.Syslog</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
