@@ -1,6 +1,6 @@
 # Serilog.Sinks.Syslog [![NuGet Version](http://img.shields.io/nuget/v/Serilog.Sinks.SyslogServer.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.SyslogServer/)
 
-Writes [Serilog](https://serilog.net) events to via Syslog.
+Writes [Serilog](https://serilog.net) events to Syslog.
 
 ### Getting started
 
