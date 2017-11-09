@@ -1,6 +1,16 @@
-# Serilog.Sinks.Syslog
+# Serilog.Sinks.Syslog [![NuGet Version](http://img.shields.io/nuget/v/Serilog.Sinks.SyslogServer.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.SyslogServer/)
 
-[![NuGet Version](http://img.shields.io/nuget/v/Serilog.Sinks.SyslogServer.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.SyslogServer/)
+Writes [Serilog](https://serilog.net) events to via Syslog.
+
+### Getting started
+
+Install the [Serilog.Sinks.SyslogServer](https://www.nuget.org/packages/Serilog.Sinks.SyslogServer) package from NuGet:
+
+```powershell
+Install-Package Serilog.Sinks.SyslogServer
+```
+
+To configure the sink in C# code, call `WriteTo.Syslog()` during logger configuration:
 
 ```csharp
 var log = new LoggerConfiguration()
