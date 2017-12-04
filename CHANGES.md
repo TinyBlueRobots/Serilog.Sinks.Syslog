@@ -12,3 +12,6 @@
 
 1.0.5
 * Remove ValueTuple dependency
+
+1.0.6
+* Remove `ExclusiveAddressUse` and Connect
