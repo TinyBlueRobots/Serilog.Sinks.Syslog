@@ -3,3 +3,9 @@
 
 1.0.1
 * Escape special characters in SD-ID
+
+1.0.3
+* Set `ExclusiveAddressUse` to false
+
+1.0.4
+* Explicitly dispose of UdpClient
