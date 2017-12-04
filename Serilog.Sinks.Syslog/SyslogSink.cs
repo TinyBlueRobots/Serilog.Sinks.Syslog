@@ -15,12 +15,15 @@ namespace Serilog.Sinks.Syslog
     public static readonly TimeSpan DefaultPeriod = TimeSpan.FromSeconds(5);
     UdpClient _udpClient;
     SyslogFormatter _syslogFormatter;
+    string _server;
+    int _port;
 
     void Init(string server, int port, SyslogFormatter syslogFormatter)
     {
       _syslogFormatter = syslogFormatter;
-      _udpClient = new UdpClient { ExclusiveAddressUse = false };
-      _udpClient.Connect(server, port);
+      _udpClient = new UdpClient();
+      _server = server;
+      _port = port;
     }
 
     public SyslogSink(string server, int port, int batchSizeLimit, TimeSpan period, int queueLimit, SyslogFormatter syslogFormatter) : base(batchSizeLimit, period, queueLimit)
@@ -38,7 +41,7 @@ namespace Serilog.Sinks.Syslog
       var tasks =
         events
         .Select(_syslogFormatter.Format)
-        .Select(bytes => _udpClient.SendAsync(bytes, bytes.Length));
+        .Select(bytes => _udpClient.SendAsync(bytes, bytes.Length, _server, _port));
       return Task.WhenAll(tasks);
     }
 
