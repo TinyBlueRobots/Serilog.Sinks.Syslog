@@ -9,3 +9,6 @@
 
 1.0.4
 * Explicitly dispose of UdpClient
+
+1.0.5
+* Remove ValueTuple dependency
