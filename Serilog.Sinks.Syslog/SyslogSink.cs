@@ -42,5 +42,11 @@ namespace Serilog.Sinks.Syslog
         .Select(bytes => _udpClient.SendAsync(bytes, bytes.Length));
       return Task.WhenAll(tasks);
     }
+
+    protected override void Dispose(bool disposing)
+    {
+      base.Dispose(disposing);
+      _udpClient.Dispose();
+    }
   }
 }
