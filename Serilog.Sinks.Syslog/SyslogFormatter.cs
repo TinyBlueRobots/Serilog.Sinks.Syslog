@@ -91,7 +91,7 @@ namespace Serilog.Sinks.Syslog
       var priority = (int)_facility * 8 + (int)severity;
       var processId = getLogEventProperty("ProcessId");
       var messageId = getLogEventProperty("SourceContext");
-      var properties = logEvent.Properties.Select(kvp => (Key: kvp.Key, Value: escapeChars(kvp.Value)));
+      var properties = logEvent.Properties.Select(kvp => new KeyValuePair<string, string>(kvp.Key, escapeChars(kvp.Value)));
       var structuredDataKvps = String.Join(" ", properties.Select(t => $@"{t.Key}=""{t.Value}"""));
       var structuredData = String.IsNullOrEmpty(structuredDataKvps) ? "-" : $"[structuredData@0 {structuredDataKvps}]";
       var syslogEvent = new SyslogEvent

@@ -14,24 +14,23 @@ namespace Serilog.Sinks.Syslog
     public const int DefaultBatchPostingLimit = 10;
     public static readonly TimeSpan DefaultPeriod = TimeSpan.FromSeconds(5);
     UdpClient _udpClient;
-    readonly SyslogFormatter _syslogFormatter;
+    SyslogFormatter _syslogFormatter;
 
-    void createUdpClient(string server, int port)
+    void Init(string server, int port, SyslogFormatter syslogFormatter)
     {
+      _syslogFormatter = syslogFormatter;
       _udpClient = new UdpClient { ExclusiveAddressUse = false };
       _udpClient.Connect(server, port);
     }
 
     public SyslogSink(string server, int port, int batchSizeLimit, TimeSpan period, int queueLimit, SyslogFormatter syslogFormatter) : base(batchSizeLimit, period, queueLimit)
     {
-      createUdpClient(server, port);
-      _syslogFormatter = syslogFormatter;
+      Init(server, port, syslogFormatter);
     }
 
     public SyslogSink(string server, int port, int batchSizeLimit, TimeSpan period, SyslogFormatter syslogFormatter) : base(batchSizeLimit, period)
     {
-      createUdpClient(server, port);
-      _syslogFormatter = syslogFormatter;
+      Init(server, port, syslogFormatter);
     }
 
     protected override Task EmitBatchAsync(IEnumerable<LogEvent> events)
