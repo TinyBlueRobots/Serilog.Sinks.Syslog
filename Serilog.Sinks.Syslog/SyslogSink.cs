@@ -36,13 +36,13 @@ namespace Serilog.Sinks.Syslog
       Init(server, port, syslogFormatter);
     }
 
-    protected override Task EmitBatchAsync(IEnumerable<LogEvent> events)
+    protected async override Task EmitBatchAsync(IEnumerable<LogEvent> events)
     {
-      var tasks =
-        events
-        .Select(_syslogFormatter.Format)
-        .Select(bytes => _udpClient.SendAsync(bytes, bytes.Length, _server, _port));
-      return Task.WhenAll(tasks);
+      foreach (var evnt in events)
+      {
+        var bytes = _syslogFormatter.Format(evnt);
+        await _udpClient.SendAsync(bytes, bytes.Length, _server, _port);
+      }
     }
 
     protected override void Dispose(bool disposing)

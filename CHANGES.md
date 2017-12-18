@@ -15,3 +15,6 @@
 
 1.0.6
 * Remove `ExclusiveAddressUse` and Connect
+
+1.0.7
+* Loop over events on `EmitBatchAsync` rather than `WaitAll`
