@@ -3,7 +3,7 @@
     <Description>Serilog sink that writes to a Syslog server</Description>
     <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Tiny Blue Robots</Authors>
-    <TargetFrameworks>netstandard20;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard20;net45</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Serilog.Sinks.Syslog</AssemblyName>
     <PackageId>Serilog.Sinks.SyslogServer</PackageId>
@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="*" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>
