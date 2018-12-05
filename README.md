@@ -38,6 +38,8 @@ var log = new LoggerConfiguration()
 
 **outputTemplate** A message template describing the output messages. See https://github.com/serilog/serilog/wiki/Formatting-Output.
 
+**restrictedToMinimumLevel** The minimum level for events passed through the sink.
+
 This sink endeavours to support [RFC5424](https://tools.ietf.org/html/rfc5424):
 
 Optionally, MSGID is set to the `SourceContext`
