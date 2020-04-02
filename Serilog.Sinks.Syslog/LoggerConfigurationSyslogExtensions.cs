@@ -24,10 +24,11 @@ namespace Serilog
     /// <param name="queueLimit">Maximum number of events in the queue.</param>
     /// <param name="outputTemplate">A message template describing the output messages.See https://github.com/serilog/serilog/wiki/Formatting-Output.</param>
     /// <param name="restrictedToMinimumLevel">The minimum level for events passed through the sink.</param>
-    public static LoggerConfiguration Syslog(this LoggerSinkConfiguration loggerSinkConfiguration, string server, int port, string application, Facility facility = Facility.User, int? batchSizeLimit = null, TimeSpan? period = null, int? queueLimit = null, string outputTemplate = null, LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
+    /// <param name="hostNamePrefix">A prefix that can be attached to the hostname to enable filtering e.g. in a kubernetes cluster</param>
+    public static LoggerConfiguration Syslog(this LoggerSinkConfiguration loggerSinkConfiguration, string server, int port, string application, Facility facility = Facility.User, int? batchSizeLimit = null, TimeSpan? period = null, int? queueLimit = null, string outputTemplate = null, LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose,string hostNamePrefix ="")
     {
         var messageTemplateTextFormatter = String.IsNullOrWhiteSpace(outputTemplate) ? null : new MessageTemplateTextFormatter(outputTemplate, null);
-        var syslogFormatter = new SyslogFormatter(application, facility, messageTemplateTextFormatter);
+        var syslogFormatter = new SyslogFormatter(application, facility, messageTemplateTextFormatter, hostNamePrefix);
         var sink =
             queueLimit.HasValue ?
             new SyslogSink(server, port, batchSizeLimit ?? SyslogSink.DefaultBatchPostingLimit, period ?? SyslogSink.DefaultPeriod, queueLimit.Value, syslogFormatter) :
