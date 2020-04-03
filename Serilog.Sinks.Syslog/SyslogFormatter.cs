@@ -26,12 +26,14 @@ namespace Serilog.Sinks.Syslog
     readonly string _application;
     readonly Facility _facility;
     readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
+    readonly string _hostNamePrefix;
 
-    public SyslogFormatter(string application, Facility facility, MessageTemplateTextFormatter messageTemplateTextFormatter = null)
+    public SyslogFormatter(string application, Facility facility, MessageTemplateTextFormatter messageTemplateTextFormatter = null,string hostNamePrefix = "")
     {
       _application = application;
       _facility = facility;
       _messageTemplateTextFormatter = messageTemplateTextFormatter;
+      _hostNamePrefix = hostNamePrefix;
     }
 
     Severity MapLogEventLevelToSeverity(LogEventLevel logEventLevel)
@@ -79,11 +81,11 @@ namespace Serilog.Sinks.Syslog
       {
         try
         {
-          return Dns.GetHostName();
+          return _hostNamePrefix+Dns.GetHostName();
         }
         catch
         {
-          return new[] { "COMPUTERNAME", "HOSTNAME" }.Select(Environment.GetEnvironmentVariable).FirstOrDefault() ?? "-";
+          return _hostNamePrefix + (new[] { "COMPUTERNAME", "HOSTNAME" }.Select(Environment.GetEnvironmentVariable).FirstOrDefault() ?? "-");
         }
       }
 
