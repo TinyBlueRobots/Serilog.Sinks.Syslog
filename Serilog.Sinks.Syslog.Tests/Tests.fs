@@ -13,7 +13,7 @@ let setup =
     Log.Logger <-
       LoggerConfiguration()
         .MinimumLevel.Verbose()
-        .WriteTo.Syslog("127.0.0.1", udpServer.Port, "test", Facility.User, Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, hostNamePrefix="testPrefix")
+        .WriteTo.Syslog("127.0.0.1", udpServer.Port, "test", Facility.User, Nullable 1, TimeSpan.FromMilliseconds 100. |> Nullable, hostNamePrefix = "testPrefix")
         .Enrich.WithProcessId()
         .CreateLogger()
     udpServer
@@ -35,7 +35,7 @@ let tests =
       let log = Log.ForContext<FooBar>()
       log.Error("Error {$foo}", @"""bar[]\""")
       udpServer.Wait()
-      let localHostName = "testPrefix"+Dns.GetHostName()
+      let localHostName = "testPrefix" + Dns.GetHostName()
       let pri, timestamp, hostname, application, processId, messageId, structuredData, message = udpServer.Requests.Dequeue() |> mtch
       Expect.equal pri "11" "pri"
       Expect.isMatch timestamp """\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+\+\d{2}:\d{2}""" "timestamp"

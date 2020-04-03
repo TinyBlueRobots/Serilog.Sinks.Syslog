@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using Serilog.Events;
 using Serilog.Formatting.Display;
 using System.Linq;
@@ -28,7 +25,7 @@ namespace Serilog.Sinks.Syslog
     readonly MessageTemplateTextFormatter _messageTemplateTextFormatter;
     readonly string _hostNamePrefix;
 
-    public SyslogFormatter(string application, Facility facility, MessageTemplateTextFormatter messageTemplateTextFormatter = null,string hostNamePrefix = "")
+    public SyslogFormatter(string application, Facility facility, MessageTemplateTextFormatter messageTemplateTextFormatter = null, string hostNamePrefix = null)
     {
       _application = application;
       _facility = facility;
@@ -81,7 +78,7 @@ namespace Serilog.Sinks.Syslog
       {
         try
         {
-          return _hostNamePrefix+Dns.GetHostName();
+          return _hostNamePrefix + Dns.GetHostName();
         }
         catch
         {

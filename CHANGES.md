@@ -22,8 +22,11 @@
 1.0.8
 * Support net45
 
-1.0.9 
+1.0.9
 * Set correct version of PeriodicBatching
 
 1.0.10
 * Forwarding `restrictedToMinimumLevel` to `LoggerConfiguration.Sink` - @thatfrankdev
+
+1.1.0
+* Added `hostNamePrefix` - @Hochfrequenz
