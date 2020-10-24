@@ -95,7 +95,7 @@ namespace Serilog.Sinks.Syslog
       var structuredData = String.IsNullOrEmpty(structuredDataKvps) ? "-" : $"[structuredData@0 {structuredDataKvps}]";
       var syslogEvent = new SyslogEvent
       {
-        IsoTimeStamp = logEvent.Timestamp.ToString("O"),
+        IsoTimeStamp = logEvent.Timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ffffffzzz"),
         HostName = getHostName(),
         Application = _application,
         ProcessId = processId,

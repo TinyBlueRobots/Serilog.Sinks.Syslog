@@ -38,7 +38,7 @@ let tests =
       let localHostName = "testPrefix" + Dns.GetHostName()
       let pri, timestamp, hostname, application, processId, messageId, structuredData, message = udpServer.Requests.Dequeue() |> mtch
       Expect.equal pri "11" "pri"
-      Expect.isMatch timestamp """\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+\+\d{2}:\d{2}""" "timestamp"
+      Expect.isMatch timestamp """\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{1,6}(\+|\-)\d{2}:\d{2}""" "timestamp"
       Expect.equal hostname localHostName "application"
       Expect.equal application "test" "application"
       Expect.isMatch processId "\\d+" "processId"
